@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: result-deploy
+  labels:
+    app: result-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: result-pod
+  template:
+    metadata:
+      name: result-pod
+      labels:
+        app: result-pod
+    spec:
+      containers:
+      - name: result-container
+        image: amazwhale/results:1.5
+        envFrom:
+          - secretRef:
+              name: secret
+        ports:
+        - containerPort: 80
+        resources:
+            limits:
+              memory: 500Mi
+              cpu: 100m
+            requests:
+              memory: 250Mi
+              cpu: 80m	
